@@ -1,0 +1,154 @@
+<div ng-controller="usersController">
+    <div class="header">
+    <!--Intro-->
+        <div class="row">
+            <div class="col-sm-9">
+                <h1 class="text-left main-heading">OurCommunity  <span><small class="knowledge">Know Your Neighborhood</small></span></h1>
+            </div>
+            <div class="col-sm-3 signin">
+                <a class="sign-in" href="#/signin">Sign In |</a>
+                <a class="sign-in" href="" ng-click="testSignin()">Skip Sign Up</a>
+            </div>
+        </div>
+        <!--Sign Up form-->
+        <div class="row">
+             <div class="col-sm-6 sign-up">
+                 <!--Backend validatoon -->
+                   <p class="userInfo" ng-if="error.firstName">{{error.firstName[0]}}</p>
+                   <p class="userInfo" ng-if="error.lastName">{{error.lastName[0]}}</p>
+                   <p class="userInfo" ng-if="error.address">{{error.address[0]}}</p>
+                   <p class="userInfo" ng-if="error.email">{{error.email[0]}}</p>
+                   <p class="userInfo" ng-if="error.emailTaken">{{error.emailTaken}}</p>
+                   <p class="userInfo" ng-if="error.password">{{error.password[0]}}</p>
+                   <p class="userInfo" ng-if="error.confirm">{{error.confirm[0]}}</p> 
+                <!--Angular validation used for front end-->
+                 <form class="form-horizontal sign-upform" name="SignUp" novalidate>
+                     <h3 class="panel-header text-center sign-header">Sign Up Below!</h3> 
+                     <small sign-up class="text-center">* Required Fields</small>
+                     <div class="form-group" ng-class="{'has-error' : SignUp.firstName.$invalid && !SignUp.firstName.$pristine }">
+                         <label for="firstName" class="col-sm-2 control-label input-label">*First:</label>
+                         <div class="col-sm-8">
+                             <input type="text" ng-model="newUser.firstName" name="firstName" class="form-control" id="firstName" placeholder="Enter Your First Name" required />
+                             <span ng-show="SignUp.firstName.$invalid && !SignUp.firstName.$pristine" class="help-block">Your first name is required.</span>
+                          </div>
+                     </div>
+                     <div class="form-group" ng-class="{'has-error' : SignUp.lastName.$invalid && !SignUp.lastName.$pristine }">
+                         <label for="lastName" class="col-sm-2 control-label input-label">*Last:</label>
+                         <div class="col-sm-8">
+                             <input type="text" ng-model="newUser.lastName" name="lastName" class="form-control" id="lastName" placeholder="Enter Your Last Name" required /> 
+                             <span ng-show="SignUp.lastName.$invalid && !SignUp.lastName.$pristine" class="help-block">Your last name is required.</span>
+                          </div>
+                     </div>
+                      <div class="form-group" ng-class="{'has-error' : SignUp.description.$invalid && !SignUp.description.$pristine }">
+                         <label for="description" class="col-sm-2 control-label input-label">*Description:</label>
+                         <div class="col-sm-8">
+                             <input type="text" ng-model="newUser.description" name="description"  ng-maxlength="50" class="form-control" id="description" placeholder="i.e. I'm a runner, hiker, family man, and tech lover!" required /> 
+                             <span ng-show="SignUp.description.$invalid && !SignUp.description.$pristine" class="help-block">A short description is required.</span>
+                             <span ng-show="SignUp.description.$invalid && !SignUp.description.$pristine" class="help-block">Your description can't be more then 50 characters.</span>
+                          </div>
+                     </div>
+                     <div class="form-group" ng-class="{'has-error' : SignUp.address.$invalid && !SignUp.address.$pristine }">
+                         <label for="streetAddress" class="col-sm-2 control-label input-label">*Address:</label>
+                         <div class="col-sm-8">
+                             <input places-auto-complete types="['geocode']" type="text" class="form-control" name="address" ng-model="newUser.address" id="streetAddress" autocomplete="off" placeholder="Enter Your Address" required /> <span ng-show="SignUp.address.$invalid && !SignUp.address.$pristine" class="help-block">Your address is required.</span>
+                          </div>
+                     </div>
+                      <div class="form-group"  ng-class="{'has-error' : SignUp.email.$invalid && !SignUp.email.$pristine }">
+                         <label for="email" class="col-sm-2 control-label input-label">*Email:</label>
+                         <div class="col-sm-8">
+                             <input type="email" ng-model="newUser.email" name="email" class="form-control" id="email" placeholder="Enter Your Email" required/>  <span ng-show="SignUp.email.$invalid && !SignUp.email.$pristine" class="help-block">Please enter a valid email. </span>
+                          </div>
+                     </div>
+                      <div class="form-group" ng-class="{'has-error' : SignUp.password.$invalid && !SignUp.password.$pristine }">
+                         <label for="password" class="col-sm-2 control-label input-label">*Password:</label>
+                         <div class="col-sm-8">
+                             <input type="password" ng-model="newUser.password" ng-minlength="6" name="password" class="form-control" id="password" placeholder="Enter Your Password" required /> 
+                             <span ng-show="SignUp.password.$invalid && !SignUp.password.$pristine" class="help-block">Your password is required.</span> 
+                             <span ng-show="SignUp.password.$error.minlength" class="help-block">Your password must be atleast 6 characters.</span>
+                          </div>
+                     </div>
+                     <div class="form-group" ng-class="{'has-error' : SignUp.confirm.$invalid && !SignUp.confirm.$pristine }">
+                         <label for="passwordConfirm" class="col-sm-2 control-label input-label">*Confirm:</label>                     
+                         <div class="col-sm-8">
+                             <input type="password" ng-model="newUser.confirmPassword" name="confirm" class="form-control" id="passwordConfirm" placeholder="Confirm Your Password" required/>  
+                             <span ng-show="SignUp.confirm.$invalid && !SignUp.confirm.$pristine" class="help-block">Please confirm your password.</span>
+                          </div>
+                     </div>
+                     <div class="form-group">
+                        <div class="col-sm-offset-3 col-sm-8 signbtn">
+                            <button ng-click="addUser()" ng-disabled="SignUp.$invalid" class="btn btn-primary btn-block">Sign Up</button>
+                        </div>
+                    </div>
+                 </form>
+             </div>
+             <div class="col-sm-6">
+                    <p id="tester" class="text-center"><strong>Please Note:</strong> If you are here testing the site, you may click the <strong> "Skip Sign Up" </strong> link in the upper right hand corner to be logged in as a test user and brought directly to an existing community. 
+
+                    If you choose to sign up via the form on the left and would like to see existing communities to select from, please use the address: <strong>'1980 Zanker Road, San Jose, CA, United States'</strong>, or an address within 20 miles of Zanker Road.
+
+                    Thanks for visiting! </p>
+             </div>
+           </div>
+        </div>
+        <!--Benefits for user-->
+        <div class="container reasons">
+            <div class="row">
+                <div class="col-sm-4 text-center">
+                    <h3 class="benefits"><span><i class="fa fa-check-circle"></i></span> Useful</h3>
+                    <p>The easiest way to keep up with your neighbors, even with your crazy schedule!</p>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <h3 class="benefits"><span><i class="fa fa-clock-o"></i></span> Up-To-Date</h3>
+                    <p>Know the latest happenings in your neighborhood all the time!</p>
+                </div>
+                <div class="col-sm-4 text-center">
+                    <h3 class="benefits"><span><i class="fa fa-lock"></i></span> Secure</h3>
+                    <p>We verify your neighbors, so you know the information being shared is local to your neighborhood!</p>
+                </div>
+            </div>
+            <!--Press logos -->
+            <div class="row press-logos">
+                <div class="col-sm-2">
+                    <img src="../images/abcnews.jpeg">
+                </div>
+                <div class="col-sm-2">
+                    <img src="../images/cnn.jpeg">
+                </div>
+                <div class="col-sm-2 wallstreet">
+                    <img src="../images/wallstreet.jpeg">
+                </div>
+                 <div class="col-sm-2 news">
+                    <img src="../images/newyorktimes.png">
+                </div>
+                <div class="col-sm-2 text-center">
+                    <img src="../images/cnbc.jpeg">
+                </div>
+                <div class="col-sm-2 news">
+                    <img src="../images/losangelestimes.png">
+                </div>
+            </div>
+            <!--Copyright and misc links-->
+            <div class="row add-info">
+                <div class="col-sm-2 text-left">
+                    <p><small>&copy; OurCommunity 2015</small><p>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <a href="">About Us</a>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <a href="">Press</a>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <a href="">Jobs</a>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <a href="">Privacy</a>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <a href="">Help</a>
+                </div>
+            </div>
+        </div>
+</div>
+
+

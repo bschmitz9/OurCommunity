@@ -1,0 +1,311 @@
+/*Global and general styles*/
+body,
+html {
+  width: 100%;
+  height: 100%;
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  font-family: 'Lato', sans-serif;
+  font-size: 14px;
+  color: black;
+  line-height: 25px;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  /*margin: 0;*/
+  font-family: 'Raleway', sans-serif;
+  color: black;
+}
+
+/*___________________________signup.html_______________________________*/
+/*Moves the sign in button in the upper right hand corner down*/
+.signin{
+    margin-top: 30px;
+}
+
+/*makes the "Sign In" verbiage the color white*/
+.sign-in{
+  color: white;
+}
+
+/*makes "Sign up below" header white*/
+.sign-header{
+  color: black;
+}
+
+/*changes slogan text on page to white*/
+.knowledge{
+  color: white;
+}
+
+.userInfo{
+  margin-left:260px;
+  color:white;
+}
+
+/*gives the panel class a margin*/
+.panel{
+    margin-top: 73px;
+}
+
+/*site header on page*/
+.main-heading{
+  margin-left: 258px;
+}
+
+/*a note to the user who is visiting the site as a tester*/
+#tester{
+  background-color: #fafafa;
+  margin-top:30px;
+  border-radius: 5%;
+  margin-right: 102px;
+}
+
+/*sign-up form*/
+.sign-upform{
+  margin-top: 25px;
+  margin-left: 260px;
+  padding-top: 10px;
+  padding-left:31px;
+  padding-bottom: 10px;
+  background-color: #fafafa;
+  position: relative;
+  z-index: 5;
+  border-radius: 5%;
+}
+
+.signbtn{
+  margin-left: 89px;
+}
+
+
+/*Moves the sign up form to the right so it isn't against the side of the screen*/
+/*background image for the home page is set here as well*/
+.header{
+    height:810px;
+    background-image: url('../images/sunnyneighborhood.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    display: block;
+    box-shadow: 0 60px 70px rgba(0, 0, 0, 0.25) inset;
+    min-height: 810px;
+    background-color: #ffffff;
+    border-bottom: 1px solid #0000ff;
+}
+
+
+.benefits{
+    color:blue;
+}
+
+/*refers to the news logos at the bottom of the home page*/
+.press-logos img{
+    padding-top: 30px;
+    opacity: 0.5;
+}
+
+.news{
+    padding-top: 10px;
+}
+
+.press-logos{
+    margin-top:10px;
+    border-bottom: 1px solid #d3d3d3;
+    height:105px;
+}
+
+/*refers to the misc links at the bottom of the home page*/
+.add-info{
+    margin-top:20px;
+}
+
+/*_____________________________signin.html_________________*/
+.signin{
+    margin-top: 20px;
+}
+
+.signin-info{
+  margin-left: 200px;
+  margin-right: 200px;
+  margin-top: 500px;
+}
+
+/*background picture for the sign in page*/
+.house-pic{
+    background-image: url('../images/house.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 100% 100%;
+    display: block;
+    box-shadow: 0 60px 70px rgba(0, 0, 0, 0.25) inset;
+    background-color: #ffffff;
+    border-bottom: 1px solid #0000ff;
+    height:978px;
+}
+
+.signin-header{
+   margin-left: 258px
+}
+
+/*app logos for apple and android*/
+.app{
+    height: 100px;
+    width: 400px;
+    margin-left: 258px
+}
+
+.current-user{
+    background-color:#F8F8F8;
+    padding-right: 10px;
+    margin-top: 66px;
+}
+/*forgot password link*/
+.forgot-password{
+    padding-top:8px;
+}
+
+/*_____________________________signup2.html__________________*/
+/*refers to the space between the disclaimer and the form on the page*/
+.disclaimer{
+    margin-bottom: 15px;
+}
+
+.security-notification {
+  margin-left: 97px;
+}
+
+/*_____________________________confirm_comm.html_____________________*/
+.community_name{
+  font-size: 24px;
+}
+
+.intro_header{
+  color:blue;
+}
+
+.noComNotice{
+  margin-top: 15px;
+  color: blue;
+}
+
+.add-community{
+  border-left: 1px solid blue;
+}
+
+.communities{
+  margin-top: 20px;
+}
+
+.more-info{
+  margin-bottom: 5px;
+}
+
+.google-map{
+  height: 100%;
+  width:100%;
+  border: 1px solid black;
+}
+
+.notice{
+  color:red;
+}
+
+.scrollInfo{
+  height: 200px;
+  overflow-y: auto;
+}
+
+
+/*_____________________________community_profile.html________________________*/
+.map-pic{
+  border-left: 1px solid blue;
+}
+
+.profile-map{
+  border: 1px solid black;
+}
+
+.community-details{
+  margin-top: 25px;
+  text-decoration: underline;
+  margin-left: 6px;
+}
+
+.community-headline{
+  color:blue;
+}
+
+.start-discussion{
+  margin-left:101px;
+}
+
+.user{
+  padding-top: 5px;
+  padding-bottom: 20px;
+}
+
+.board{
+  margin-top: 76px;
+  font-size: 18px;
+}
+
+.poppin{
+  background: #fff;
+  padding: 15px;
+  box-shadow: 0 0 10px #999;
+  border-radius: 1px;
+  height: 405px;
+}
+
+div[ng-controller] {
+  position: relative;
+}
+
+div[ng-controller] #panel {
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  margin-left: -180px;
+  z-index: 5;
+  background-color: #fff;
+  padding: 5px;
+  border: 1px solid #999;
+}
+
+.modal-dialog{
+    overflow-y: initial !important
+}
+.modal-body{
+    height: 500px;
+    overflow-y: auto;
+}
+
+.discussions{
+  margin-left: 120px;
+  border-bottom: 1px solid #f6f6f6;
+}
+
+.discussion-date{
+  color: #0080ff;
+}
+
+.discussion-name{
+  color: #0080ff;
+  font-weight: bold;
+}
+
+
+
+
+
+

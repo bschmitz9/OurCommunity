@@ -1,0 +1,109 @@
+<div class="container" ng-controller="communityConfirmController">
+        <div class="row">
+            <div class="col-sm-offset-11 col-sm-1">
+                <a href="" ng-click="logout()">logout</a>
+            </div>
+        </div>
+        <!--Allows a user to select the community they can join in their area-->
+        <div class="row">
+            <div class="col-sm-6 intro">
+                <h3 class="intro_header">Hi, {{user.firstName}}. Welcome to OurCommunity!</h3>
+                <p class="notice" ng-if="logged_in && !noCommunity">You must select a community. Please make a selection below.</p>
+                <p>Stay in touch and up-to-date on the latest in your neighborhood!</p>
+                <p>According to our records, your address is: <strong> {{user.address}}. </strong> Please select from the following communities in your area:</p> 
+                <small><strong>Note: </strong>Communities within 10 miles of your noted address. You may only join one community at a time. Scroll to see more communities in your area (if applicable).</small>
+                <p class="noComNotice" ng-if="allCommunities.length === 0">No communties within 10 miles. Add one today!</p>
+                <form class="well " name="selectCommunity">
+                        <div class="form-group row" ng-class="{'has-error' : selectCommunity.communityName.$invalid && !selectCommunity.communityName.$pristine }">
+                            <div class="scrollInfo">
+                                 <label for="actionLocation"><u>Please Select A Community Below:</u></label>
+                                 <!--display error message if the user is already pary of a community-->
+                                 <p class="alert alert-info" role="alert" ng-if="error.alreadyJoined">{{error.alreadyJoined}}</p>
+                                 <p ng-repeat="comm in allCommunities"><strong>{{comm.data.name}}</strong> - {{comm.distance}} away from you.</p>
+                            </div>
+                            <select id="actionLocation" name="communityName" class="form-control" ng-model="community.communityName" required>
+                                <option ng-repeat="community in allCommunities">{{community.data.name}}</option>
+                            </select>
+                        </div>
+
+                        <!-- Button trigger modal -->
+                        <button type="button" class="btn btn-success btn-block more-info" ng-click="moreInfo(community.communityName)" data-toggle="modal" data-target="#myModal"  ng-disabled="selectCommunity.$invalid">
+                           Show me more information regarding this community.
+                        </button>
+                        <!-- Modal -->
+                        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title text-center" id="myModalLabel">{{communityInfo.data.name}}</h4>
+                              </div>
+                              <div class="modal-body">
+                                <p class="text-center"><strong>Created By: </strong> {{communityInfo.data.firstName}} {{communityInfo.data.lastName}} on {{communityInfo.data.created_at}}</p>
+                                <p class="text-center"><strong>Located At: </strong> {{communityInfo.data.address}}</p>
+                                <p class="text-center"><strong>{{communityInfo.distance}} away from you.</strong></p>
+                                <div>
+                                    <map center="[{{communityInfo.data.location.A}}, {{communityInfo.data.location.F}}]" zoom="5">
+                                         <marker position="[{{communityInfo.data.location.A}}, {{communityInfo.data.location.F}}]"></marker>
+                                    </map>         
+                                </div> 
+                                <p class="text-center"><strong>Communtiy Objective:</strong> {{communityInfo.data.objective}}</p>
+                                <p class="text-center" ng-if="communityInfo.data.users.length === 0">There is currently {{communityInfo.data.users.length}} members of your neighborhood in this community.</p>
+                                <p class="text-center" ng-if="communityInfo.data.users.length === 1">There is currently {{communityInfo.data.users.length}} member of your neighborhood in this community.</p>
+                                <p class="text-center" ng-if="communityInfo.data.users.length > 1">There are currently {{communityInfo.data.users.length}} members of your neighborhood in this community.</p>
+                                <p class="text-center">Please join this community to view members and the latest discussions.</p>
+                              </div>
+                              <div class="modal-footer">
+                                <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <!-- end of Modal -->
+                        <button class="btn btn-primary btn-block"  ng-disabled="selectCommunity.$invalid"  ng-click="userAdded()">
+                            I want to join this community
+                        </button>
+                    </form>
+            </div>  
+            <!--Allows the user to add a new community-->
+            <div class="col-sm-6 add-community">
+                <h3>Don't see your community? Add one here!</h3>
+                <small><strong> Note: </strong> You will be added to this community upon its registration.</small>
+                   <p class="alert alert-info" role="alert" ng-if="error.nameInvalid">{{error.nameInvalid}}</p>
+                    <p class="alert alert-info" role="alert" ng-if="error.addressInvalid">{{error.addressInvalid}}</p>
+                    <p class="alert alert-info" role="alert" ng-if="error.alreadyMember">{{error.alreadyMember}}</p>
+                    <p class="alert alert-info" role="alert" ng-if="error.nameTaken">{{error.nameTaken}}</p>
+                    <p class="alert alert-info" role="alert" ng-if="error.addressTaken">{{error.addressTaken}}</p>
+                <form class="form-horizontal" name="createCommunity" novalidate>
+                    <div class="form-group" ng-class="{'has-error' : createCommunity.name.$invalid && !createCommunity.name.$pristine }">
+                         <label for="name" class="col-sm-2 control-label">Name:</label>
+                         <div class="col-sm-7">
+                             <input type="text" ng-model="community.name" name="name" class="form-control" id="name" placeholder="Enter Community Name" required />
+                             <span ng-show="createCommunity.name.$invalid && !createCommunity.name.$pristine" class="help-block">Community name is required.</span>
+                          </div>
+                     </div>
+                     <div class="form-group" ng-class="{'has-error' : createCommunity.address.$invalid && !createCommunity.address.$pristine }">
+                         <label for="name" class="col-sm-2 control-label">Address:</label>
+                         <div class="col-sm-7">
+                             <input places-auto-complete types="['geocode']" type="text" ng-model="community.address" name="address" class="form-control" id="address" placeholder="Enter Community Address" autocomplete="off"required />
+                             <span ng-show="createCommunity.address.$invalid && !createCommunity.address.$pristine" class="help-block">An address is required.</span>
+                          </div>
+                     </div>
+                     <div class="form-group" ng-class="{'has-error' : createCommunity.objective.$invalid && !createCommunity.objective.$pristine }">
+                         <label for="name" class="col-sm-2 control-label">Objective:</label>
+                         <div class="col-sm-7">
+                             <textarea class="form-control" rows="5" ng-model="community.objective" ng-minlength="10" name="objective" id="objective" placeholder="Please talk about your community objective, reason for creating this community." required></textarea> 
+                             <span ng-show="createCommunity.objective.$invalid && !createCommunity.objective.$pristine" class="help-block">Please enter a community objective.</span>
+                             <span ng-show="createCommunity.objective.$error.minlength" class="help-block">Your objective must be atleast 10 characters.</span>
+                          </div>
+                     </div>
+                     <div class="form-group">
+                         <div class="col-sm-offset-2 col-sm-7">
+                            <button type="submit" class="btn btn-primary btn-block" ng-disabled="createCommunity.$invalid" ng-click="addCommunity()">Register &amp; Join this Community</button>
+                         </div>
+                     </div>
+                </form>
+            </div>
+       </div>
+</div>
+    

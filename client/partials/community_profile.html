@@ -1,0 +1,137 @@
+<div class="container" ng-controller="communityProfileController">
+    <div class="row">
+          <div class="col-sm-12">
+              <div class="col-sm-9">
+                  <h3>OurCommunity<small> Know Your Neighborhood</small></h3>
+              </div>
+              <div class="col-sm-3">
+                  <small>Hi {{user.firstName}} |</small>
+                  <a href="" ng-click="logout()"> logout</a>
+              </div>
+              <!--Community profile header -->
+              <div class="panel">
+                  <h1 class="text-center panel-header community-headline">Welcome to the {{community.name}}</h1>
+                  <p class="text-center">Created {{community.created_at}}, by {{community.firstName}} {{community.lastName}}</p>
+              </div>
+          </div>  
+    </div> 
+    <!--Allows a user to start a new discussion-->
+    <div class="row">
+          <div class="col-sm-7">
+               <h3 class="text-center start-discussion">Add A Message to the Community Board</h3>
+              <form class="form-horizontal discussion" name="Discussion" novalidate>
+                   <div class="form-group"  ng-class="{'has-error' : Discussion.text.$invalid && !Discussion.text.$pristine }">
+                       <div class="col-sm-12">
+                           <label for="description" class="col-sm-2 control-label">Message:</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control" rows="5" ng-model="discussion.text" ng-minlength="10" ng-maxlength="150" name="text" 
+                                id="text" placeholder="Please enter a message to share with community members" required></textarea>  
+                                <span ng-show="Discussion.text.$error.minlength" class="help-block">Your message must be atleast 10 characters.</span>
+                                <span ng-show="Discussion.text.$error.maxlength" class="help-block">Your description can't be more than 150 characters.</span>
+                            </div>
+                        </div>   
+                   </div>
+                   <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button ng-click="newDiscussion()" ng-disabled="Discussion.$invalid" class="btn btn-primary btn-block">Add to Message Board</button>
+                        </div>
+                  </div>
+              </form>
+              <div class="discussions" ng-repeat="discussion in discussions | limitTo: -30 | orderBy: '-date'"><small class="discussion-name">{{discussion.firstName}} {{discussion.lastName}} </small>  <br><p>{{discussion.text}}<br><small class="discussion-date">{{discussion.created_at}}<a ng-if="user.email === discussion.userEmail" ng-click="removeMessage(discussion)">    Delete Your Message</a></small></p></div>
+              <div>
+              <!-- Shows a message to the user creating the community, letting the user know about the message board-->
+                <p class="text-center board" ng-if="community.member[0] && discussions.length === 0">This is your message board! A way for you and the members in your community to connect and stay up to date on the latest happenings in your area. Get the ball rolling! Post the first message in your new community!</p>
+              </div>
+          </div>
+            <!--Display the community details on the page-->
+            <div class="col-sm-5 map-pic">
+              <div class="poppin">
+                <!-- handle whether Google returns Lat Longs of A/F or G/k-->
+                <div ng-if="community.location.A && community.location.F">
+                    <map center="[{{community.location.A}}, {{community.location.F}}]" zoom="6">
+                      <marker id="foo" position="[{{community.location.A}}, {{community.location.F}}]" on-click="showInfoWindow(event, 'bar')"></marker>
+                        <info-window id="bar" visible-on-marker="foo" position="{{community.location.A}}, {{community.location.F}}" visible="true">
+                            <div ng-non-bindable="">
+                                <div id="siteNotice"></div>
+                                <p id="firstHeading" class="text-center firstHeading"><b>{{community.name}}</b></p>
+                                <div id="bodyContent">
+                                    <p class="text-center">{{community.address}}</p>
+                                    <p class="text-center" ng-if="community.users.length >= 1">{{distance}} away from you.</p>
+                                </div>
+                            </div>
+                        </info-window>
+                    </map>
+                 </div> 
+                 <div ng-if="community.location.G && community.location.K">
+                    <map center="[{{community.location.G}}, {{community.location.K}}]" zoom="6">
+                      <marker id="foo" position="[{{community.location.G}}, {{community.location.K}}]" on-click="showInfoWindow(event, 'bar')"></marker>
+                        <info-window id="bar" visible-on-marker="foo" position="{{community.location.G}}, {{community.location.K}}" visible="true">
+                            <div ng-non-bindable="">
+                                <div id="siteNotice"></div>
+                                <p id="firstHeading" class="text-center firstHeading"><b>{{community.name}}</b></p>
+                                <div id="bodyContent">
+                                    <p class="text-center">{{community.address}}</p>
+                                    <p class="text-center" ng-if="community.users.length >= 1">{{distance}} away from you.</p>
+                                </div>
+                            </div>
+                        </info-window>
+                    </map>
+                 </div> 
+              </div>
+               <h5 class="community-details">Community Details:</h5>
+               <ul>
+                  <li><strong>Founder:</strong> {{community.firstName}} {{community.lastName}}</li>
+                  <li><strong>Date Founded:</strong> {{community.created_at}}</li>
+                  <li><strong>Address:</strong> {{community.address}}</li>
+                  <li><strong>Community Objective:</strong> {{community.objective}}</li>
+                  <li><strong>Current Members:</strong></li>
+               </ul>
+
+               <!--message for the user who created a new community-->
+                <p class="well" ng-if="community.member[0]">You are the first member! Post a message to the community board to get the discussion started!</p>
+                <!--user signs in-->
+                <p class="text-center" ng-show="community.users.length === 1 && user.email === community.email">You are the only one currently in this community.</p>
+                <p class="text-center" ng-if="community.users.length > 1 && logged_in">You and {{community.users.length - 1}} other member of your neighborhood are in this community.</p>
+                <!--if a user joins a community from the dropdown options-->
+                <p class="text-center" ng-if="community.users.length === 0">There is currently {{community.users.length}} members of your neighborhood in this community.</p>
+                <p class="text-center" ng-if="community.users.length === 1 && user.email !== community.email">You and {{community.users.length}} other member of your neighborhood are in this community.</p>
+                <p class="text-center" ng-if="community.users.length > 1 && !logged_in">You and {{community.users.length}} other members of your neighborhood are in this community.</p>
+
+
+                <!--loop through each member and the date they joined arrays-->
+                <div class="well user text-center" ng-repeat="member in communityMembers | limitTo: -5 | orderBy: '-joined'">
+                    <p><strong>Member Name:</strong> {{member.name}} <span ng-if="user.email === member.userEmail">(this is you)</span><br><strong> Joined On:</strong> {{member.joined}} <br> <strong>Description:</strong> {{member.description}}</p>
+                </div>
+
+                <div ng-if="communityMembers.length > 5">
+              <!-- Button trigger modal -->
+                    <a class="pull-right" href="" ng-click="showAll()" data-toggle="modal" data-target="#myModal">
+                       See All Members
+                    </a>
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title text-center" id="myModalLabel">All Members <span class="label label-primary">{{communityMembers.length}}</span></h4>
+                          </div>
+                          <div class="modal-body">
+                             <div class="well user text-center" ng-repeat="member in communityMembers | orderBy: '-joined'">
+                                  <p><strong>Member Name:</strong> {{member.name}} <span ng-if="user.email === member.userEmail">(this is you)</span><br><strong> Joined On:</strong> {{member.joined}} <br> <strong>Description:</strong> {{member.description}}</p>
+                              </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- end of Modal -->
+                  </div>
+                
+                <!--show if user is creating a new community and is the first one in the community-->
+                <p class="well user text-center" ng-if="community.member[0]" ng-repeat="describe in description"><strong> Your Description: </strong> {{describe}}</p>
+          </div>
+    </div> 
+</div>

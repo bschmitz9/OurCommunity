@@ -1,0 +1,90 @@
+<div class="container" ng-controller="usersController">
+    <div class="row panel">
+        <div class="col-sm-12">
+            <h3 class="text-left panel-header">OurCommunity<small> Know Your Kneighbordhood</small></h3>
+        </div>
+    </div>
+    <!--header information for alternative sign-up-->
+    <div class="row">
+        <div class="col-sm-10 disclaimer">
+            <h1>Welcome! Please sign up below!</h1>
+            <p><strong>Please complete all fields so that we can ensure your neighborhood's privacy.</strong></p>
+        </div>  
+    </div>
+    <!--sign up form-->
+     <div class="row">
+             <div class="col-sm-6">
+                 <!--Backend validatoon -->
+                   <p ng-show="error.firstName">{{error.firstName[0]}}</p>
+                   <p ng-show="error.lastName">{{error.lastName[0]}}</p>
+                   <p ng-show="error.address">{{error.address[0]}}</p>
+                   <p ng-show="error.email">{{error.email[0]}}</p>
+                   <p ng-show="error.emailTaken">{{error.emailTaken}}</p>
+                   <p ng-show="error.password">{{error.password[0]}}</p>
+                   <p ng-show="error.confirm">{{error.confirm[0]}}</p> 
+                <!--Angular validation used for front end-->
+                 <form class="form-horizontal" name="SignUp" novalidate>
+                     <div class="form-group" ng-class="{'has-error' : SignUp.firstName.$invalid && !SignUp.firstName.$pristine }">
+                         <label for="firstName" class="col-sm-2 control-label">*First:</label>
+                         <div class="col-sm-8">
+                             <input type="text" ng-model="newUser.firstName" name="firstName" class="form-control" id="firstName" placeholder="Enter Your First Name" required />
+                             <span ng-show="SignUp.firstName.$invalid && !SignUp.firstName.$pristine" class="help-block">Your first name is required.</span>
+                          </div>
+                     </div>
+                     <div class="form-group" ng-class="{'has-error' : SignUp.lastName.$invalid && !SignUp.lastName.$pristine }">
+                         <label for="lastName" class="col-sm-2 control-label">*Last:</label>
+                         <div class="col-sm-8">
+                             <input type="text" ng-model="newUser.lastName" name="lastName" class="form-control" id="lastName" placeholder="Enter Your Last Name" required /> 
+                             <span ng-show="SignUp.lastName.$invalid && !SignUp.lastName.$pristine" class="help-block">Your last name is required.</span>
+                          </div>
+                     </div>
+                      <div class="form-group" ng-class="{'has-error' : SignUp.description.$invalid && !SignUp.description.$pristine }">
+                             <label for="description" class="col-sm-2 control-label">*Description:</label>
+                             <div class="col-sm-8">
+                                 <input type="text" ng-model="newUser.description" name="description"  ng-maxlength="50" class="form-control" id="description" placeholder="i.e. I'm a runner, hiker, family man, and tech lover!" required /> 
+                                 <span ng-show="SignUp.description.$invalid && !SignUp.description.$pristine" class="help-block">A short description is required.</span>
+                                 <span ng-show="SignUp.description.$invalid && !SignUp.description.$pristine" class="help-block">Your description can't be more then 50 characters.</span>
+                              </div>
+                     </div>
+                     <div class="form-group" ng-class="{'has-error' : SignUp.address.$invalid && !SignUp.address.$pristine }">
+                         <label for="streetAddress" class="col-sm-2 control-label">*Address:</label>
+                         <div class="col-sm-8">
+                             <input places-auto-complete types="['geocode']" type="text" class="form-control" name="address" ng-model="newUser.address" id="streetAddress" placeholder="Enter Your Address" autocomplete="off" required /> <span ng-show="SignUp.address.$invalid && !SignUp.address.$pristine" class="help-block">Your address is required.</span>
+                          </div>
+                     </div>
+                      <div class="form-group"  ng-class="{'has-error' : SignUp.email.$invalid && !SignUp.email.$pristine }">
+                         <label for="email" class="col-sm-2 control-label">*Email:</label>
+                         <div class="col-sm-8">
+                             <input type="email" ng-model="newUser.email" name="email" class="form-control" id="email" placeholder="Enter Your Email" required/>  <span ng-show="SignUp.email.$invalid && !SignUp.email.$pristine" class="help-block">Please enter a valid email. </span>
+                          </div>
+                     </div>
+                      <div class="form-group" ng-class="{'has-error' : SignUp.password.$invalid && !SignUp.password.$pristine }">
+                         <label for="password" class="col-sm-2 control-label">*Password:</label>
+                         <div class="col-sm-8">
+                             <input type="password" ng-model="newUser.password" ng-minlength="6" name="password" class="form-control" id="password" placeholder="Enter Your Password" required /> 
+                             <span ng-show="SignUp.password.$invalid && !SignUp.password.$pristine" class="help-block">Your password is required.</span> 
+                             <span ng-show="SignUp.password.$error.minlength" class="help-block">Your password must be atleast 6 characters.</span>
+                          </div>
+                     </div>
+                     <div class="form-group" ng-class="{'has-error' : SignUp.confirm.$invalid && !SignUp.confirm.$pristine }">
+                         <label for="passwordConfirm" class="col-sm-2 control-label">*Confirm:</label>                     
+                         <div class="col-sm-8">
+                             <input type="password" ng-model="newUser.confirmPassword" name="confirm" class="form-control" id="passwordConfirm" placeholder="Confirm Your Password" required/>  
+                             <span ng-show="SignUp.confirm.$invalid && !SignUp.confirm.$pristine" class="help-block">Please confirm your password.</span>
+                          </div>
+                     </div>
+                     <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-8">
+                            <button ng-click="addUser2()" ng-disabled="SignUp.$invalid" class="btn btn-primary btn-block">Sign Up</button>
+                        </div>
+                    </div>
+                 </form>
+             </div>
+        </div>
+        <!--user information is secure notification-->
+        <div class="row">
+            <div class="col-sm-6">
+                <small class="security-notification"><i class="fa fa-lock"></i>  Your information is safe and secure.</small>
+            </div>
+        </div>
+</div>
