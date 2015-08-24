@@ -14,13 +14,7 @@ var userSchema = mongoose.Schema({
         password: String,
         created_at: String,
         date: Date,
-    //facebook login
-    // facebook: {
-    //     id: String,
-    //     token: String,
-    //     email: String,
-    //     name: String
-    // }
+   
 });
 
 mongoose.model('User', userSchema);
